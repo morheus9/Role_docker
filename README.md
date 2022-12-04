@@ -1,4 +1,4 @@
-[![Latest Stable Version](https://img.shields.io/packagist/v/phplicengine/bitly?label=version)]([https://packagist.org/packages/phplicengine/bitly](https://github.com/morheus9/Role_docker))
+[![Latest Stable Version](https://img.shields.io/packagist/v/phplicengine/bitly?label=version)]([https://github.com/morheus9/Role_docker](https://github.com/morheus9/Role_docker))
 
 Docker
 =========
