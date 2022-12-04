@@ -1,4 +1,4 @@
-[![Latest Stable Version](https://img.shields.io/packagist/v/phplicengine/bitly?label=version)]([https://github.com/morheus9/Role_docker](https://github.com/morheus9/Role_docker))
+[![GitHub release](https://img.shields.io/github/release/Naereen/StrapDown.js.svg)](https://GitHub.com/morheus9/Role_docker/releases/)
 
 Docker
 =========
