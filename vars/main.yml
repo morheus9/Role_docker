@@ -1,0 +1,12 @@
+---
+# vars file for deploy
+pre_packages:
+  - ca-certificates
+  - curl
+  - lsb-release
+
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  - docker-compose-plugin

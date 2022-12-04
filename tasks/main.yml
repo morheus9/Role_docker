@@ -1,0 +1,78 @@
+---
+- name: Update and upgrade apt packages
+  ansible.builtin.apt:
+    upgrade: true
+    update_cache: true
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: "{{ pre_packages }}"
+    state: present
+
+- name: Ensure additional dependencies are installed (on Ubuntu < 20.04 and any other systems)
+  ansible.builtin.apt:
+    name: gnupg2
+    state: present
+  when: ansible_distribution != 'Ubuntu' or ansible_distribution_version is version('20.04', '<')
+
+- name: Ensure additional dependencies are installed (on Ubuntu >= 20.04)
+  ansible.builtin.apt:
+    name: gnupg
+    state: present
+  when: ansible_distribution == 'Ubuntu' and ansible_distribution_version is version('20.04', '>=')
+
+- name: Add Docker GPG apt Key
+  ansible.builtin.apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+    state: present
+
+- name: Add repository into sources list
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.docker.com/linux/{{ ansible_distribution | lower }} {{ ansible_distribution_release }} stable"
+    state: present
+
+- name: Install dependencies
+  ansible.builtin.apt:
+    name: "{{ docker_packages }}"
+    state: present
+    update_cache: true
+
+- name: Add adminstrator to docker group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Enable docker and containerd services
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: docker
+    append: true
+
+- name: Enable docker.service
+  ansible.builtin.systemd:
+    name: docker.service
+    daemon_reload: true
+    enabled: true
+
+- name: Enable containerd.service
+  ansible.builtin.systemd:
+    name: containerd.service
+    daemon_reload: true
+    enabled: true
+
+- name: Add_prune_job # every day
+  ansible.builtin.cron:
+    user: "{{ ansible_user }}"
+    name: "Docker prune"
+    minute: "0"
+    hour: "0"
+    job: "docker system prune -f"
+  when: add_prune_job_to_cron
+
+- name: Delete_prune_job
+  ansible.builtin.cron:
+    user: "{{ ansible_user }}"
+    name: "Docker prune"
+    state: absent
+  when: delete_prune_job_from_cron
