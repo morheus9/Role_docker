@@ -39,13 +39,13 @@
 
 - name: Add adminstrator to docker group
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
+    name: "{{ docker_user }}"
     groups: docker
     append: true
 
 - name: Enable docker and containerd services
   ansible.builtin.user:
-    name: "{{ ansible_user }}"
+    name: "{{ docker_user }}"
     groups: docker
     append: true
 
@@ -63,7 +63,7 @@
 
 - name: Add_prune_job # every day
   ansible.builtin.cron:
-    user: "{{ ansible_user }}"
+    user: "{{ docker_user }}"
     name: "Docker prune"
     minute: "0"
     hour: "0"
@@ -72,7 +72,7 @@
 
 - name: Delete_prune_job
   ansible.builtin.cron:
-    user: "{{ ansible_user }}"
+    user: "{{ docker_user }}"
     name: "Docker prune"
     state: absent
   when: delete_prune_job_from_cron
