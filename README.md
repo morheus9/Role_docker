@@ -9,7 +9,8 @@ Role Variables
 Defaults:
 ```
 add_prune_job_to_cron: false
-delete_prune_job_from_cron: false  
+delete_prune_job_from_cron: false
+docker_user: pi
 ```
 Example Playbook
 ----------------
